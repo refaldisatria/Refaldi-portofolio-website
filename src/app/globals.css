@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/* Dark mode dikontrol lewat class "dark" pada <html> (default: dark). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Design tokens: LIGHT (default :root) ---------- */
+:root {
+  --bg: #f6f8f9;
+  --bg-alt: #eef2f4;
+  --card: #ffffff;
+  --card-soft: rgba(15, 23, 42, 0.03);
+  --field: #f1f5f9;
+  --line: rgba(15, 23, 42, 0.14);
+  --line-soft: rgba(15, 23, 42, 0.08);
+  --fg: #0f172a;
+  --body: #1e293b;
+  --muted: #475569;
+  --header: rgba(246, 248, 249, 0.85);
+  --accent-fg: #0f766e; /* aksen untuk TEKS agar kontras di latar terang */
+  --stroke: rgba(15, 23, 42, 0.55);
+  --stroke-w: 2px;
+  --glow-a: rgba(13, 148, 136, 0.08);
+  --glow-b: rgba(0, 242, 195, 0.1);
+}
+
+/* ---------- Design tokens: DARK (sesuai referensi) ---------- */
+.dark {
+  --bg: #0b0d0e;
+  --bg-alt: #0e1214;
+  --card: #121619;
+  --card-soft: rgba(255, 255, 255, 0.03);
+  --field: #090c0e;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-soft: rgba(255, 255, 255, 0.05);
+  --fg: #ffffff;
+  --body: #e2e8f0;
+  --muted: #94a3b8;
+  --header: rgba(11, 13, 14, 0.8);
+  --accent-fg: #00f2c3;
+  --stroke: rgba(255, 255, 255, 0.4);
+  --stroke-w: 1.5px;
+  --glow-a: rgba(20, 184, 166, 0.05);
+  --glow-b: rgba(0, 242, 195, 0.05);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-alt: var(--bg-alt);
+  --color-card: var(--card);
+  --color-soft: var(--card-soft);
+  --color-field: var(--field);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-fg: var(--fg);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-header: var(--header);
+  --color-accent: #00f2c3; /* untuk background/border/glow */
+  --color-accent-fg: var(--accent-fg); /* untuk teks */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--body);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s, color 0.3s;
+}
+::selection {
+  background: #00f2c3;
+  color: #000;
+}
+:focus-visible {
+  outline: 2px solid var(--accent-fg);
+  outline-offset: 2px;
+}
+
+/* Boot sudah pernah diputar di sesi ini: jangan tampilkan overlay (diset oleh skrip di <head>). */
+html.boot-seen #boot-screen {
+  display: none;
+}
+
+/* ---------- Efek khusus ---------- */
+.stroke-text {
+  color: transparent;
+  -webkit-text-stroke: var(--stroke-w) var(--stroke);
+  letter-spacing: -0.02em;
+}
+.glow-cyan {
+  box-shadow: 0 0 25px -4px rgba(0, 242, 195, 0.35);
+}
+.glow-portal {
+  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 195, 0.15);
+}
+.hero-portal-ring {
+  border: 1px solid rgba(0, 242, 195, 0.22);
+}
+.terminal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+/* Fade-in section (hanya aktif bila JS berjalan; lihat <noscript> di layout) */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
